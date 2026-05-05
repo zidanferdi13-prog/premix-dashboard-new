@@ -1,0 +1,95 @@
+/* ============================================================
+   CardScaleDetail — Formula/Transaction Table
+   ============================================================ */
+
+.csd-panel {
+  margin-top: 10px;
+  background: var(--color-content-bg);
+  border: 1.5px solid var(--color-header-border);
+  border-left: 3px solid var(--color-brand-accent);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.csd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.csd-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--color-text-primary);
+}
+
+.csd-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--color-brand-accent);
+  border: 1.5px solid var(--color-brand-accent);
+  background: rgba(230, 126, 34, 0.07);
+  border-radius: var(--border-radius-sm);
+  padding: 2px 8px;
+}
+
+.csd-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.csd-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.csd-table thead th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--color-text-secondary);
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--color-text-primary);
+}
+
+.csd-table tbody td {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-header-border);
+}
+
+.csd-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.csd-empty {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: 10px 2px 6px;
+}
+
+@media (max-width: 768px) {
+  .csd-panel {
+    padding: 14px 14px;
+  }
+
+  .csd-title {
+    font-size: 13px;
+  }
+
+  .csd-table {
+    min-width: 470px;
+  }
+}

@@ -13,11 +13,11 @@ import { useSidebar } from '../../store/SidebarContext'
 
 const menuItems = [
   { to: '/',            icon: LayoutDashboard, label: 'Dashboard'      },
-  { to: '/produksi',    icon: Factory,         label: 'Produksi'       },
-  { to: '/bahan-baku',  icon: PackageOpen,     label: 'Bahan Baku'     },
-  { to: '/formula',     icon: FlaskConical,    label: 'Formula Premix' },
+  // { to: '/produksi',    icon: Factory,         label: 'Produksi'       },
+  // { to: '/bahan-baku',  icon: PackageOpen,     label: 'Bahan Baku'     },
+  // { to: '/formula',     icon: FlaskConical,    label: 'Formula Premix' },
   { to: '/laporan',     icon: BarChart3,       label: 'Laporan'        },
-  { to: '/pengaturan',  icon: Settings,        label: 'Pengaturan'     },
+  // { to: '/pengaturan',  icon: Settings,        label: 'Pengaturan'     },
 ]
 
 function Sidebar() {
@@ -31,7 +31,7 @@ function Sidebar() {
         {!collapsed && (
           <div className="sidebar-brand-text">
             <span className="sidebar-brand-title">WAN Factory</span>
-            <span className="sidebar-brand-sub">Premix Dashboard</span>
+            <span className="sidebar-brand-sub">IoT Dashboard</span>
           </div>
         )}
       </div>

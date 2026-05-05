@@ -1,37 +1,110 @@
-import { Factory, PackageOpen, FlaskConical, TrendingUp } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react';
+import { CardActiveMo } from '../components/HomePageModal/CardActiveMo'
+import { CardScale } from '../components/HomePageModal/CardScale'
+import { CardScaleDetail } from '../components/HomePageModal/CardScaleDetail'
+import { useMo } from '../store/MoContext'
 
-const stats = [
-  { label: 'Total Produksi Hari Ini',  value: '12.400 kg', icon: Factory,      variant: 'orange' },
-  { label: 'Bahan Baku Tersedia',       value: '84 item',   icon: PackageOpen,  variant: 'green'  },
-  { label: 'Formula Aktif',             value: '27',        icon: FlaskConical, variant: 'blue'   },
-  { label: 'Output Bulan Ini',          value: '310 ton',   icon: TrendingUp,   variant: 'red'    },
-]
 
 function HomePage() {
-  return (
-    <div>
-      <div className="stat-grid">
-        {stats.map(({ label, value, icon: Icon, variant }) => (
-          <div key={label} className="stat-card">
-            <div className={`stat-card-icon stat-card-icon--${variant}`}>
-              <Icon size={22} />
-            </div>
-            <div>
-              <div className="stat-card-value">{value}</div>
-              <div className="stat-card-label">{label}</div>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      <div className="panel">
-        <p className="panel-title">Aktivitas Produksi Terkini</p>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: 13 }}>
-          Data produksi akan ditampilkan di sini.
-        </p>
-      </div>
-    </div>
-  )
+    const [newData, setNewData] = useState();
+    const wsRef = useRef(null);
+    const reconnectTimer = useRef(null);
+    const isMounted = useRef(true);
+
+    useEffect(() => {
+        isMounted.current = true;
+        const WS_URL = "ws://192.168.5.16:8765";
+        const RECONNECT_DELAY = 3000;
+        const connect = () => {
+            if (!isMounted.current) return;
+            const ws = new WebSocket(WS_URL);
+            wsRef.current = ws;
+            ws.onopen = () => {
+                console.log("WebSocket connected");
+            };
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleDataUpdate(data);
+            };
+            ws.onclose = () => {
+                console.log(`WebSocket disconnected, reconnect dalam ${RECONNECT_DELAY / 1000}s...`);
+                if (isMounted.current) {
+                    reconnectTimer.current = setTimeout(connect, RECONNECT_DELAY);
+                }
+            };
+            ws.onerror = () => {
+                ws.close();
+            };
+        };
+        connect();
+        return () => {
+            isMounted.current = false;
+            clearTimeout(reconnectTimer.current);
+            wsRef.current?.close();
+        };
+    }, []);
+
+    const handleDataUpdate = (newData) => {
+        setNewData(newData);
+    }
+
+    const keywords = [
+        "WAN Semen Abu-abu OPC Tipe I-Curah",
+        "WAN Kapur 200 mesh (CaCO3) Curah",
+    ];
+
+    const { moNumber, moData, historyData } = useMo();
+    const [dataDetail, setDataDetail] = useState([]);
+    const prevMoNumber = useRef(null);
+
+    useEffect(() => {
+        if (moNumber && historyData && !prevMoNumber.current) {
+            const detail = moData?.data?.detail || null;
+            const matchedItems = detail?.filter(item =>
+                keywords.includes(item.product_nrm)
+            ) || [];
+            setDataDetail(matchedItems);
+            prevMoNumber.current = moNumber;
+        }
+    }, [moNumber, historyData]);
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className="home-header">
+                <CardActiveMo />
+            </div>
+            <div className="cs-wrapper">
+                <CardScale
+                    variant="kapur"
+                    label="KAPUR"
+                    weight={newData?.GW1}
+                    cycle={newData?.BC1}
+                    material={dataDetail?.[0]?.product_nrm}
+                    target={dataDetail?.[0]?.qty_plan}
+                    act_qty={historyData?.data?.[0]?.qty_actual}
+                // statusText={newData?.status1}
+                />
+
+                <div className="cs-divider">
+                    <span className="cs-vs">vs</span>
+                </div>
+
+                <CardScale
+                    variant="semen"
+                    label="SEMEN"
+                    weight={newData?.GW2}
+                    cycle={newData?.BC2}
+                    material={dataDetail?.[1]?.product_nrm}
+                    target={dataDetail?.[1]?.qty_plan}
+                    act_qty={historyData?.data?.[1]?.qty_actual}
+                // statusText={newData?.status2}
+                />
+            </div>
+
+            <CardScaleDetail />
+        </div>
+    )
 }
 
 export default HomePage

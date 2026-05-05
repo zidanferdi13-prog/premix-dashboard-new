@@ -1,0 +1,189 @@
+/* ============================================================
+   CardActiveMo — Active MO Panel  |  tema mengikuti global.css
+   ============================================================ */
+
+.cam-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: var(--color-content-bg);
+  border: 1.5px solid var(--color-header-border);
+  border-left: 3px solid var(--color-brand-accent);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+}
+
+/* ── Left: label + MO number ──────────────────────────────── */
+.cam-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cam-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--color-brand-accent);
+  border: 1.5px solid var(--color-brand-accent);
+  background: rgba(230, 126, 34, 0.07);
+  border-radius: var(--border-radius-sm);
+  padding: 2px 9px;
+  width: fit-content;
+}
+
+.cam-label-notactive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #9ca3af; /* abu-abu */
+  border: 1.5px solid #d1d5db;
+  background: #f3f4f6;
+  border-radius: var(--border-radius-sm);
+  padding: 2px 9px;
+  width: fit-content;
+  opacity: 0.7; /* biar keliatan non aktif */
+  cursor: not-allowed; /* opsional */
+}
+
+.cam-mo-number {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Right: action buttons ────────────────────────────────── */
+.cam-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cam-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: var(--border-radius-sm);
+  border: 1.5px solid;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+  background: none;
+}
+
+/* Refresh — neutral */
+.cam-btn--refresh {
+  color: var(--color-text-secondary);
+  border-color: var(--color-header-border);
+  background: var(--color-body-bg);
+}
+.cam-btn--refresh:hover {
+  background: var(--color-header-border);
+}
+
+/* Refresh MO — info */
+.cam-btn--refresh-mo {
+  color: var(--color-info);
+  border-color: var(--color-info);
+  background: rgba(41, 128, 185, 0.06);
+}
+.cam-btn--refresh-mo:hover {
+  background: rgba(41, 128, 185, 0.14);
+}
+
+/* Reset ALL — danger */
+.cam-btn--reset {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+  background: rgba(231, 76, 60, 0.06);
+}
+.cam-btn--reset:hover {
+  background: rgba(231, 76, 60, 0.14);
+}
+
+/* Confirm — success */
+.cam-btn--confirm {
+  color: var(--color-success);
+  border-color: var(--color-success);
+  background: rgba(39, 174, 96, 0.06);
+}
+.cam-btn--confirm:hover {
+  background: rgba(39, 174, 96, 0.14);
+}
+
+.cam-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Search — brand accent */
+.cam-btn--search {
+  color: var(--color-brand-accent);
+  border-color: var(--color-brand-accent);
+  background: rgba(230, 126, 34, 0.06);
+}
+.cam-btn--search:hover:not(:disabled) {
+  background: rgba(230, 126, 34, 0.14);
+}
+.cam-btn--search:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ── MO input ─────────────────────────────────────────────── */
+.cam-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cam-mo-input {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background: var(--color-body-bg);
+  border: 1.5px solid var(--color-header-border);
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  width: 220px;
+  transition: border-color 0.15s;
+}
+
+.cam-mo-input:focus {
+  border-color: var(--color-brand-accent);
+}
+
+.cam-mo-input--error {
+  border-color: var(--color-danger);
+}
+
+.cam-mo-input:disabled {
+  opacity: 0.5;
+}
+
+.cam-input-error {
+  font-size: 11px;
+  color: var(--color-danger);
+  font-style: italic;
+}

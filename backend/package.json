@@ -1,0 +1,21 @@
+{
+  "name": "premix-backend-express",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Express backend for Premix dashboard",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.22.3",
+    "socket.io": "^4.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
