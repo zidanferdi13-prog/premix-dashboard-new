@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { FileText, X, Printer } from 'lucide-react'
 import { findOneWeight } from '../../services/api'
-import { API_BASE_URL } from '../../constants'
+import { API_BASE_URL, API_PRINT_URL } from '../../constants'
 import toast from 'react-hot-toast'
 
 // format ISO → "04/05/2026 16:20"
@@ -121,7 +121,7 @@ export function ModalDetailMO({ row, onClose }) {
 
         setPrinting(true)
         try {
-            const res = await fetch(`${API_BASE_URL}/print`, {
+            const res = await fetch(`${API_PRINT_URL}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/html' },
                 body: html,

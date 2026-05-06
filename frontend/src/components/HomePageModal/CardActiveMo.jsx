@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useMo } from '../../store/MoContext';
 import { resetDataWeight, endProcesWeight, findOneWeight } from '../../services/api';
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../../constants';
+import { API_BASE_URL, API_PRINT_URL} from '../../constants';
 import { getMO } from '../../services/api';
 
 export function CardActiveMo() {
@@ -167,7 +167,7 @@ export function CardActiveMo() {
             </html>`;
 
             // const printing = await fetch(`${API_BASE_URL}/print`, {
-            const printing = await fetch(`http://192.168.5.21:3000/print`, {
+            const printing = await fetch(`${API_PRINT_URL}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/html' },
                 body: html,
