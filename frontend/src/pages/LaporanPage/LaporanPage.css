@@ -219,7 +219,6 @@
   font-size: 12px;
 }
 
-/* Nomor MO clickable button */
 .lap-nomor-btn {
   font-weight: 600;
   color: var(--color-info);
@@ -234,7 +233,6 @@
 }
 .lap-nomor-btn:hover { color: var(--color-brand-accent); }
 
-/* Detail button in table */
 .lap-btn-detail {
   display: inline-flex;
   align-items: center;
@@ -275,7 +273,6 @@
   overflow: hidden;
 }
 
-/* Modal header */
 .lap-modal-header {
   display: flex;
   align-items: center;
@@ -298,135 +295,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  color: var(--color-text-secondary);
-  transition: background .15s, color .15s;
-}
-.lap-modal-close:hover { background: var(--color-body-bg); color: var(--color-danger); }
-
-/* Modal body */
-.lap-modal-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* Info row */
-.lap-modal-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  background: var(--color-body-bg);
-  border-radius: var(--border-radius-sm);
-  padding: 12px 14px;
-}
-
-.lap-modal-info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 140px;
-  flex: 1;
-}
-
-.lap-modal-info-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  color: var(--color-text-secondary);
-}
-
-.lap-modal-info-val {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-text-primary);
-}
-
-/* Struk summary */
-.lap-modal-struk {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 8px;
-}
-
-.lap-modal-struk-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--color-body-bg);
-  border-radius: var(--border-radius-sm);
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  border-left: 3px solid var(--color-brand-accent);
-}
-
-/* Modal footer */
-.lap-modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 12px 18px;
-  border-top: 1px solid var(--color-header-border);
-  flex-shrink: 0;
-}
-
-.lap-modal-btn-cancel {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  border: 1.5px solid var(--color-header-border);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-text-secondary);
-  transition: background .15s;
-}
-.lap-modal-btn-cancel:hover { background: var(--color-body-bg); }
-
-.lap-modal-btn-print {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  background: var(--color-success);
-  color: #fff;
-  border-radius: var(--border-radius-sm);
-  transition: opacity .15s;
-}
-.lap-modal-btn-print:hover:not(:disabled) { opacity: .88; }
-.lap-modal-btn-print:disabled { opacity: .45; cursor: default; }
-
-.lap-empty {
-  text-align: center;
-  padding: 48px 20px;
-  color: var(--color-text-muted);
-  font-size: 13px;
-}
-
-.lap-empty-icon {
-  margin-bottom: 10px;
-  opacity: .4;
-}
-
-/* ── Loading / error state ────────────────────────────────────── */
-.lap-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--color-text-muted);
-  font-size: 13px;
-  background: var(--color-content-bg);
-  border-radius: var(--border-radius);
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
 }

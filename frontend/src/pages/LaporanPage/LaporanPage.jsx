@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BarChart3, Search, Package, CheckCircle2, Clock, Weight, Eye } from 'lucide-react'
-import { findMoPlant } from '../services/api'
-import { ModalDetailMO } from '../components/HomePageModal/ModalDetailMO'
+import { findMoPlant } from '../../services/api'
+import { ModalDetailMO } from '../../components/HomeMTech/ModalDetailMO'
 import './LaporanPage.css'
 
 // format "2026-05-04T09:20:44.000Z" → "04/05/2026 16:20"

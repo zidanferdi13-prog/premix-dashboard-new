@@ -9,7 +9,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 function formatWeight(val) {
   const num = parseFloat(val) || 0
   const int = Math.floor(num).toString().padStart(1, '0')
-  const dec = (num % 1).toFixed(2).toString().padStart(4, '0') // includes the dot
+  const dec = (num % 1).toFixed(2).toString().padStart(4, '0')
   return { int, dec }
 }
 
@@ -25,7 +25,6 @@ export function CardScale({ variant, label, range, weight, material, target, sta
   const lastProcessedCycle = useRef(null)
   const latestWeight     = useRef(weight)
 
-  // Selalu update latestWeight ke nilai terbaru tanpa trigger effect
   useEffect(() => {
     latestWeight.current = weight
   }, [weight])
@@ -60,15 +59,14 @@ export function CardScale({ variant, label, range, weight, material, target, sta
           }
           console.log(`[${variant}] Weight setelah 3 detik:`, finalWeight)
           console.log(`[${variant}] Data siap dikirim:`, {
-            premix_temp_detail_id: premixId, // Asumsi cycle adalah ID detail premix
+            premix_temp_detail_id: premixId,
             t_mo_id: moData?.data?.t_mo_id,
             product_nrm: material,
             qty: finalWeight,
             sequence: '1'
           })
-          // TODO: panggil addTransaction() di sini
           await addTransactionPlant({
-            premix_temp_detail_id: premixId, // Asumsi cycle adalah ID detail premix
+            premix_temp_detail_id: premixId,
             t_mo_id: moData?.data?.t_mo_id,
             product_nrm: material,
             qty: finalWeight,
@@ -77,7 +75,7 @@ export function CardScale({ variant, label, range, weight, material, target, sta
 
           console.log(`[${variant}] Transaksi berhasil dikirim ke backend`)
           setStatusTimbangan(prev => ({ ...prev, [variant]: 'Selesai' }))
-          await searchMo(moNumber) // Refresh data MO setelah transaksi
+          await searchMo(moNumber)
         } catch (err) {
           console.error(`[${variant}] Error proses cycle:`, err)
         } finally {
@@ -89,8 +87,6 @@ export function CardScale({ variant, label, range, weight, material, target, sta
 
   return (
     <div className={`cs-panel cs-panel--${variant}`}>
-
-      {/* Header */}
       <div className="cs-panel-header">
         <div className="cs-header-left">
           <span className={`cs-label cs-label--${variant}`}>{label}</span>
@@ -102,10 +98,8 @@ export function CardScale({ variant, label, range, weight, material, target, sta
         </div>
       </div>
 
-      {/* Material */}
       <div className="cs-material-label">— {material ?? 'Bahan Material'} —</div>
 
-      {/* Weight */}
       <div className="cs-weight-area">
         <div className="cs-weight-display">
           <span className={`cs-digits cs-digits--${variant}`}>
@@ -115,7 +109,6 @@ export function CardScale({ variant, label, range, weight, material, target, sta
         </div>
       </div>
 
-      {/* Target */}
       <div className="cs-target-row">
         <span className="cs-target-label">TARGET</span>
         <span className="cs-target-dash">—</span>
@@ -124,7 +117,6 @@ export function CardScale({ variant, label, range, weight, material, target, sta
         </span>
       </div>
 
-      {/* Progress */}
       <div className="cs-progress-track">
         <div
           className={`cs-progress-fill cs-progress-fill--${variant}`}
@@ -132,7 +124,6 @@ export function CardScale({ variant, label, range, weight, material, target, sta
         />
       </div>
 
-      {/* Footer */}
       <div className="cs-panel-footer">
         <span className="cs-footer-status">{statusText ?? 'Menunggu data...'}</span>
         <button className="cs-confirm-btn">
@@ -140,8 +131,6 @@ export function CardScale({ variant, label, range, weight, material, target, sta
           Konfirmasi
         </button>
       </div>
-
     </div>
   )
 }
-

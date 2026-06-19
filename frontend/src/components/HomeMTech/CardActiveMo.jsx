@@ -166,7 +166,6 @@ export function CardActiveMo() {
             <body>${printContents}</body>
             </html>`;
 
-            // const printing = await fetch(`${API_BASE_URL}/print`, {
             const printing = await fetch(`${API_PRINT_URL}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/html' },
@@ -198,10 +197,8 @@ export function CardActiveMo() {
         const result = await searchMo(trimmed);
         if (result.success) {
             setInputValue('');
-            // console.log('MO ditemukan, nomor:', result.moNumber);
-            // console.log('MO data:', result.data);
         } else {
-            setLocalError(result.message);
+            setLocalError(result.message || 'MO tidak ditemukan');
         }
     };
 

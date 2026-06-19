@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
-import { CardActiveMo } from '../components/HomePageModal/CardActiveMo'
-import { CardScale } from '../components/HomePageModal/CardScale'
-import { CardScaleDetail } from '../components/HomePageModal/CardScaleDetail'
-import { useMo } from '../store/MoContext'
+import { CardActiveMo } from '../../components/HomeMTech/CardActiveMo'
+import { CardScale } from '../../components/HomeMTech/CardScale'
+import { CardScaleDetail } from '../../components/HomeMTech/CardScaleDetail'
+import { useMo } from '../../store/MoContext'
 
 
 function HomeMTech() {
@@ -83,7 +83,6 @@ function HomeMTech() {
                     material={dataDetail?.[0]?.product_nrm}
                     target={dataDetail?.[0]?.qty_plan}
                     act_qty={historyData?.data?.[0]?.qty_actual}
-                // statusText={newData?.status1}
                 />
 
                 <div className="cs-divider">
@@ -98,7 +97,6 @@ function HomeMTech() {
                     material={dataDetail?.[1]?.product_nrm}
                     target={dataDetail?.[1]?.qty_plan}
                     act_qty={historyData?.data?.[1]?.qty_actual}
-                // statusText={newData?.status2}
                 />
             </div>
 

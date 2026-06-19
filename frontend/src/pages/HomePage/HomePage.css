@@ -1,0 +1,28 @@
+.home-page {
+  padding: 8px 0;
+}
+
+.home-page__header {
+  margin-bottom: 32px;
+}
+
+.home-page__header h1 {
+  font-size: 24px;
+  color: var(--color-text-primary);
+}
+
+.home-page__header p {
+  margin-top: 4px;
+  color: var(--color-text-secondary);
+}
+
+.home-page__cards {
+  display: flex;
+  gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .home-page__cards {
+    flex-direction: column;
+  }
+}
