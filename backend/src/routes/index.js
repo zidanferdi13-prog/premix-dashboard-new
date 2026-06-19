@@ -1,4 +1,5 @@
 const { healthController } = require('../controllers/health.controller')
+const { printController } = require('../controllers/print.controller')
 const {
   addTransactionPlantController,
   listTransactionPlantController
@@ -14,12 +15,14 @@ function registerRoutes(app, config) {
       availableRoutes: [
         '/health',
         '/api',
+        '/print',
         '/timbangan/addTransactionPlant',
         '/timbangan/transactions'
       ]
     })
   })
 
+  app.post('/print', printController)
   app.post('/timbangan/addTransactionPlant', addTransactionPlantController)
   app.get('/timbangan/transactions', listTransactionPlantController)
 }

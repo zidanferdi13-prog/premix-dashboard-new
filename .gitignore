@@ -21,6 +21,8 @@ frontend/.vite/
 .env
 .env.local
 .env.*.local
+.claude/
+docs/
 # .env.example sengaja di-track (template)
 
 # ── Editor & OS ──────────────────────────────────────────────

@@ -6,6 +6,7 @@ const { registerRoutes } = require('./routes')
 const app = express()
 
 app.use(cors())
+app.use(express.text({ type: 'text/html', limit: '1mb' }))
 app.use(express.json())
 
 registerRoutes(app, config)
