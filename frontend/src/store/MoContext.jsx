@@ -1,14 +1,14 @@
-import { createContext, useContext, useRef, useState } from 'react'
+import { createContext, useRef, useState } from 'react'
 import { findMoPlant, nomorMO, refreshDataWeight } from '../services/api'
 import moment from 'moment'
 
-const MoContext = createContext(null)
+export const MoContext = createContext(null)
 
 export function MoProvider({ children }) {
-    const [moData, setMoData]         = useState(null)   // full response.data
-    const [moNumber, setMoNumber]     = useState(null)   // string nomor MO
-    const [loading, setLoading]       = useState(false)
-    const [error, setError]           = useState(null)
+    const [moData, setMoData] = useState(null)   // full response.data
+    const [moNumber, setMoNumber] = useState(null)   // string nomor MO
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
     const [historyData, setHistoryData] = useState(null) // data history MO
     const hasFetched = useRef(false)  // pastikan fetch hanya sekali
 
@@ -19,7 +19,7 @@ export function MoProvider({ children }) {
         setLoading(true)
         setError(null)
         try {
-            const today    = moment().format('YYYY-MM-DD')
+            const today = moment().format('YYYY-MM-DD')
             const response = await findMoPlant(today)
             if (response.status === 200 && response.data?.moNumber) {
                 setMoNumber(response.data.moNumber)
@@ -43,10 +43,11 @@ export function MoProvider({ children }) {
             if (response.status === 200 && response.data) {
                 setMoNumber(trimmed)
                 setMoData(response.data)
-                const t_mo_id = response.data?.data?.t_mo_id   
+                console.log("data MO", response.data)
+                const t_mo_id = response.data?.data?.t_mo_id
                 if (t_mo_id) {
                     await historyMO(t_mo_id)  // langsung fetch detail MO setelah dapat nomor
-                } 
+                }
                 return { success: true, moNumber: trimmed, data: response.data }
             } else {
                 const msg = 'MO tidak ditemukan'
@@ -98,8 +99,4 @@ export function MoProvider({ children }) {
             {children}
         </MoContext.Provider>
     )
-}
-
-export function useMo() {
-    return useContext(MoContext)
 }

@@ -1,6 +1,6 @@
 import { FlaskConical } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { useMo } from '../../store/MoContext'
+import { useMo } from '../../store/useMo'
 import './CardScaleDetail.css'
 
 export function CardScaleDetail() {

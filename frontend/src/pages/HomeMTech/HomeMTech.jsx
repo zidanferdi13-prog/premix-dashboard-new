@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 import { CardActiveMo } from '../../components/HomeMTech/CardActiveMo'
 import { CardScale } from '../../components/HomeMTech/CardScale'
 import { CardScaleDetail } from '../../components/HomeMTech/CardScaleDetail'
-import { useMo } from '../../store/MoContext'
+import { useMo } from '../../store/useMo'
+import { MoProvider } from '../../store/MoContext'
 
 
-function HomeMTech() {
+function HomeMTechInner() {
 
     const [newData, setNewData] = useState();
     const wsRef = useRef(null);
@@ -105,4 +106,10 @@ function HomeMTech() {
     )
 }
 
-export default HomeMTech
+export default function HomeMTech() {
+    return (
+        <MoProvider>
+            <HomeMTechInner />
+        </MoProvider>
+    )
+}
