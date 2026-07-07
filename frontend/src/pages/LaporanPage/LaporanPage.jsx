@@ -127,6 +127,7 @@ function LaporanPage() {
                                 <tr>
                                     <th>#</th>
                                     <th>Nomor MO</th>
+                                    <th>Work Center</th>
                                     <th>Produk</th>
                                     <th>Qty (zak)</th>
                                     <th>Dibuat</th>
@@ -154,6 +155,7 @@ function LaporanPage() {
                                                     {row.nomor_mo}
                                                 </button>
                                             </td>
+                                            <td>{row.work_center}</td>
                                             <td>{row.product_name}</td>
                                             <td>{Number(row.qty).toLocaleString('id-ID')}</td>
                                             <td>{row.dibuat}</td>

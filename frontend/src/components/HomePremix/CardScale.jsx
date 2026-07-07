@@ -1,100 +1,59 @@
 import { CheckCircle } from 'lucide-react'
 import './CardScale.css'
-import { useMo } from '../../store/useMo'
-import { useEffect, useRef, useState } from 'react'
+import { usePremix } from '../../store/usePremix'
 import { addTransactionPlant } from '../../services/api'
+import toast from 'react-hot-toast'
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+export function CardScale({ variant, label, range, weight, material, target, statusText, cycle }) {
+  const pct = target ? Math.min((parseFloat(weight) / parseFloat(target)) * 100, 100) : 0
 
-function formatWeight(val) {
-  const num = parseFloat(val) || 0
-  const int = Math.floor(num).toString().padStart(1, '0')
-  const dec = (num % 1).toFixed(2).toString().padStart(4, '0')
-  return { int, dec }
-}
+  const {
+    currentRm,
+    moData,
+    nextRm,
+    setFlashSuccess,
+    flashSuccess,
+    allDone,
+  } = usePremix()
 
-export function CardScale({ variant, label, range, weight, material, target, statusText, act_qty, cycle }) {
-  const { int, dec } = formatWeight(weight)
-  const pct = target ? Math.min((parseFloat(act_qty) / parseFloat(target)) * 100, 100) : 0
+  const handleConfirm = async () => {
+    if (!currentRm || !target) return
+    const weightNum = Number(weight)
+    const targetNum = Number(target)
 
-  const { moNumber, moData, searchMo } = useMo()
-  const [statusTimbangan, setStatusTimbangan] = useState({})
-
-  const prevCycle        = useRef(null)
-  const lockRef          = useRef(false)
-  const lastProcessedCycle = useRef(null)
-  const latestWeight     = useRef(weight)
-
-  useEffect(() => {
-    latestWeight.current = weight
-  }, [weight])
-
-  useEffect(() => {
-    const cycleChanged = cycle !== undefined && cycle !== prevCycle.current
-    prevCycle.current = cycle
-
-    if (!moNumber) return console.log(`[${variant}] No active MO, skip proses cycle`)
-
-    if (cycleChanged && weight > 0) {
-      if (lockRef.current || lastProcessedCycle.current === cycle) {
-        console.log(`[${variant}] Sedang proses atau cycle sudah diproses, skip (cycle: ${cycle})`)
-        return
-      }
-
-      lockRef.current = true
-      lastProcessedCycle.current = cycle
-
-      ;(async () => {
-        try {
-          console.log(`[${variant}] Cycle berubah → ${cycle}, weight saat trigger:`, weight)
-          console.log(`[${variant}] Tunggu 3000ms...`)
-          setStatusTimbangan(prev => ({ ...prev, [variant]: 'Processing...' }))
-          await sleep(3000)
-
-          const finalWeight = latestWeight.current
-          const premixId = moData?.data?.detail?.find(d => d.product_nrm === material)?.premix_temp_detail_id
-          if (!premixId) {
-            console.error(`[${variant}] Gagal temukan premix_temp_detail_id untuk material ${material}`)
-            return
-          }
-          console.log(`[${variant}] Weight setelah 3 detik:`, finalWeight)
-          console.log(`[${variant}] Data siap dikirim:`, {
-            premix_temp_detail_id: premixId,
-            t_mo_id: moData?.data?.t_mo_id,
-            product_nrm: material,
-            qty: finalWeight,
-            sequence: '1'
-          })
-          await addTransactionPlant({
-            premix_temp_detail_id: premixId,
-            t_mo_id: moData?.data?.t_mo_id,
-            product_nrm: material,
-            qty: finalWeight,
-            sequence: '1'
-          })
-
-          console.log(`[${variant}] Transaksi berhasil dikirim ke backend`)
-          setStatusTimbangan(prev => ({ ...prev, [variant]: 'Selesai' }))
-          await searchMo(moNumber)
-        } catch (err) {
-          console.error(`[${variant}] Error proses cycle:`, err)
-        } finally {
-          lockRef.current = false
-        }
-      })()
+    if (!Number.isFinite(weightNum) || !Number.isFinite(targetNum) || targetNum <= 0) {
+      toast.error('Target atau weight tidak valid')
+      return
     }
-  }, [cycle])
+
+    const withinTolerance = Math.abs(weightNum - targetNum) / targetNum <= 0.10
+    if (!withinTolerance) {
+      toast.error('Berat tidak sesuai target (±10%)')
+      return
+    }
+
+    try {
+      await addTransactionPlant({
+        premix_temp_detail_id: currentRm.premix_temp_detail_id,
+        t_mo_id: moData?.data?.t_mo_id,
+        product_nrm: currentRm.product_nrm,
+        qty: weightNum,
+        sequence: '1',
+      })
+      setFlashSuccess(true)
+      setTimeout(() => setFlashSuccess(false), 1500)
+      nextRm()
+    } catch (err) {
+      toast.error('Gagal mengirim data')
+    }
+  }
 
   return (
-    <div className={`cs-panel cs-panel--${variant}`}>
+    <div className={`cs-panel cs-panel--${variant} ${flashSuccess ? 'cs-panel--success' : ''}`}>
       <div className="cs-panel-header">
         <div className="cs-header-left">
           <span className={`cs-label cs-label--${variant}`}>{label}</span>
           <span className="cs-range">{range}</span>
-        </div>
-        <div className="cs-status-badge">
-          <span className="cs-status-dot" />
-          {statusTimbangan?.[variant] ?? 'GOYANG'}
         </div>
       </div>
 
@@ -125,10 +84,14 @@ export function CardScale({ variant, label, range, weight, material, target, sta
       </div>
 
       <div className="cs-panel-footer">
-        <span className="cs-footer-status">{statusText ?? 'Menunggu data...'}</span>
-        <button className="cs-confirm-btn">
+        <span className="cs-footer-status">{allDone ? 'Semua RM Selesai' : (statusText ?? 'Menunggu data...')}</span>
+        <button
+          className="cs-confirm-btn"
+          onClick={handleConfirm}
+          disabled={!currentRm || allDone}
+        >
           <CheckCircle size={13} />
-          Konfirmasi
+          Confirm
         </button>
       </div>
     </div>

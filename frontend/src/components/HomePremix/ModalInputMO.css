@@ -1,0 +1,92 @@
+.premix-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.premix-modal-card {
+  position: relative;
+  width: min(92vw, 420px);
+  padding: 24px;
+  border-radius: 18px;
+  background: #111827;
+  color: #fff;
+}
+
+.premix-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.premix-modal-close:hover {
+  opacity: 1;
+}
+
+.premix-modal-card h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.premix-modal-card p {
+  margin: 0 0 14px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.premix-modal-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+.premix-modal-input:focus {
+  border-color: #60a5fa;
+}
+
+.premix-modal-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.premix-modal-submit:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+.premix-modal-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.premix-modal-error {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #7f1d1d;
+  color: #fca5a5;
+  font-size: 13px;
+}

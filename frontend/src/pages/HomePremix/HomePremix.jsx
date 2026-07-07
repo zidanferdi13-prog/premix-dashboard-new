@@ -1,76 +1,82 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react'
 import { CardActiveMo } from '../../components/HomePremix/CardActiveMo'
 import { CardScale } from '../../components/HomePremix/CardScale'
-import { useMo } from '../../store/useMo'
-import { MoProvider } from '../../store/MoContext'
+import { ModalInputMO } from '../../components/HomePremix/ModalInputMO'
+import { PremixProvider } from '../../store/PremixContext'
+import { usePremix } from '../../store/usePremix'
 
 function HomePremixInner() {
-  const [newData, setNewData] = useState();
-  const wsRef = useRef(null);
-  const reconnectTimer = useRef(null);
-  const isMounted = useRef(true);
+  const wsRef = useRef(null)
+  const reconnectTimer = useRef(null)
+  const isMounted = useRef(true)
+  const [newData, setNewData] = useState({})
+
+  const { moNumber, currentRm, openPopup } = usePremix()
+  const moNumberRef = useRef(moNumber)
+
+  // Always keep ref in sync with latest moNumber
+  useEffect(() => {
+    moNumberRef.current = moNumber
+  }, [moNumber])
 
   useEffect(() => {
-    isMounted.current = true;
-    const WS_URL = "ws://192.168.5.16:8765";
-    const RECONNECT_DELAY = 3000;
+    isMounted.current = true
+    const WS_URL = 'ws://192.168.5.16:8765'
+    const RECONNECT_DELAY = 3000
+
     const connect = () => {
-      if (!isMounted.current) return;
-      const ws = new WebSocket(WS_URL);
-      wsRef.current = ws;
-      ws.onopen = () => {
-        console.log("WebSocket connected");
-      };
+      if (!isMounted.current) return
+      const ws = new WebSocket(WS_URL)
+      wsRef.current = ws
+
+      ws.onopen = () => console.log('WebSocket connected')
+
       ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setNewData(data);
-      };
-      ws.onclose = () => {
-        console.log(`WebSocket disconnected, reconnect dalam ${RECONNECT_DELAY / 1000}s...`);
-        if (isMounted.current) {
-          reconnectTimer.current = setTimeout(connect, RECONNECT_DELAY);
+        const data = JSON.parse(event.data)
+        setNewData(data)
+
+        // Auto-detect: weight changed AND no MO → show popup
+        // Use ref to avoid stale closure
+        if (!moNumberRef.current && Number(data?.GW1) > 0) {
+          openPopup()
         }
-      };
-      ws.onerror = () => {
-        ws.close();
-      };
-    };
-    connect();
-    return () => {
-      isMounted.current = false;
-      clearTimeout(reconnectTimer.current);
-      wsRef.current?.close();
-    };
-  }, []);
+      }
 
-  const { moNumber, moData, historyData } = useMo();
-  const [dataDetail, setDataDetail] = useState([]);
-  const prevMoNumber = useRef(null);
+      ws.onclose = () => {
+        console.log(`WebSocket disconnected, reconnect dalam ${RECONNECT_DELAY / 1000}s...`)
+        if (isMounted.current) {
+          reconnectTimer.current = setTimeout(connect, RECONNECT_DELAY)
+        }
+      }
 
-  useEffect(() => {
-    if (moNumber && historyData && !prevMoNumber.current) {
-      const detail = moData?.data?.detail || null;
-      setDataDetail(detail);
-      console.log(detail,'datadetail')
-      prevMoNumber.current = moNumber;
+      ws.onerror = () => ws.close()
     }
-  }, [moNumber, historyData]);
 
+    connect()
+
+    return () => {
+      isMounted.current = false
+      clearTimeout(reconnectTimer.current)
+      wsRef.current?.close()
+    }
+  }, [])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <ModalInputMO />
+
       <div className="home-header">
         <CardActiveMo />
       </div>
+
       <div className="cs-wrapper">
         <CardScale
           variant="SMALL"
           label="SMALL"
           weight={newData?.GW1}
+          material={currentRm?.product_nrm}
+          target={currentRm?.qty_plan}
           cycle={newData?.BC1}
-        // material={dataDetail?.[0]?.product_nrm}
-        // target={dataDetail?.[0]?.qty_plan}
-        // act_qty={historyData?.data?.[0]?.qty_actual}
         />
       </div>
     </div>
@@ -79,8 +85,8 @@ function HomePremixInner() {
 
 export default function HomePremix() {
   return (
-    <MoProvider>
+    <PremixProvider>
       <HomePremixInner />
-    </MoProvider>
+    </PremixProvider>
   )
 }

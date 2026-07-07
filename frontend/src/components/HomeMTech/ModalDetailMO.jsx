@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { FileText, X, Printer } from 'lucide-react'
+import { FileText, X, Printer, Package, Clock, Scale, Hash } from 'lucide-react'
 import { findOneWeight } from '../../services/api'
-import { API_BASE_URL, API_PRINT_URL } from '../../constants'
+import { API_PRINT_URL } from '../../constants'
 import toast from 'react-hot-toast'
 
 // format ISO → "04/05/2026 16:20"
@@ -72,52 +72,52 @@ export function ModalDetailMO({ row, onClose }) {
         const seq_kapur = products.filter(i => i.produk_name !== 'WAN Semen Abu-abu OPC Tipe I-Curah')
 
         const printContents = `
-<div id="print-area" style="font-size:10px; font-family: monospace">
-  <div>
-    <div style="font-weight:bold; font-size:15px;">************************</div>
-    <div style="font-weight:bold; font-size:15px;">${nomor_mo}</div>
-    <div style="font-size:15px;font-weight:bold;">${product_name}</div>
-    <div style="display:flex; gap:20px;">
-      <div style="font-weight:bold; width:50%; font-size:15px;">START</div>
-      <div style="font-weight:bold; width:50%; font-size:15px;">: ${start}</div>
-    </div>
-    <div style="display:flex; gap:32px;">
-      <div style="font-weight:bold; width:50%; font-size:15px;">END</div>
-      <div style="font-weight:bold; width:50%; font-size:15px;">: ${end}</div>
-    </div>
-    <div style="display:flex; gap:20px;">
-      <div style="font-weight:bold; width:50%; font-size:15px;">TOT SEMEN</div>
-      <div style="font-weight:bold; width:50%; font-size:15px;">: ${pasir} Kg</div>
-    </div>
-    <div style="display:flex; gap:20px;">
-      <div style="font-weight:bold; width:50%; font-size:15px;">TOT KAPUR</div>
-      <div style="font-weight:bold; width:50%; font-size:15px;">: ${kapur} Kg</div>
-    </div>
-    <div style="display:flex; gap:20px;">
-      <div style="font-weight:bold; width:50%; font-size:15px;">SEQ SEMEN</div>
-      <div style="font-weight:bold; width:50%; font-size:15px;">: ${seq_semen.length}</div>
-    </div>
-    <div style="display:flex; gap:20px;">
-      <div style="font-weight:bold; width:50%; font-size:15px;">SEQ KAPUR</div>
-      <div style="font-weight:bold; width:50%; font-size:15px;">: ${seq_kapur.length}</div>
-    </div>
-    <div style="font-weight:bold; font-size:15px;">************************</div>
-  </div>
-</div>`
+                <div id="print-area" style="font-size:10px; font-family: monospace">
+                <div>
+                    <div style="font-weight:bold; font-size:15px;">************************</div>
+                    <div style="font-weight:bold; font-size:15px;">${nomor_mo}</div>
+                    <div style="font-size:15px;font-weight:bold;">${product_name}</div>
+                    <div style="display:flex; gap:20px;">
+                    <div style="font-weight:bold; width:50%; font-size:15px;">START</div>
+                    <div style="font-weight:bold; width:50%; font-size:15px;">: ${start}</div>
+                    </div>
+                    <div style="display:flex; gap:32px;">
+                    <div style="font-weight:bold; width:50%; font-size:15px;">END</div>
+                    <div style="font-weight:bold; width:50%; font-size:15px;">: ${end}</div>
+                    </div>
+                    <div style="display:flex; gap:20px;">
+                    <div style="font-weight:bold; width:50%; font-size:15px;">TOT SEMEN</div>
+                    <div style="font-weight:bold; width:50%; font-size:15px;">: ${pasir} Kg</div>
+                    </div>
+                    <div style="display:flex; gap:20px;">
+                    <div style="font-weight:bold; width:50%; font-size:15px;">TOT KAPUR</div>
+                    <div style="font-weight:bold; width:50%; font-size:15px;">: ${kapur} Kg</div>
+                    </div>
+                    <div style="display:flex; gap:20px;">
+                    <div style="font-weight:bold; width:50%; font-size:15px;">SEQ SEMEN</div>
+                    <div style="font-weight:bold; width:50%; font-size:15px;">: ${seq_semen.length}</div>
+                    </div>
+                    <div style="display:flex; gap:20px;">
+                    <div style="font-weight:bold; width:50%; font-size:15px;">SEQ KAPUR</div>
+                    <div style="font-weight:bold; width:50%; font-size:15px;">: ${seq_kapur.length}</div>
+                    </div>
+                    <div style="font-weight:bold; font-size:15px;">************************</div>
+                </div>
+                </div>`
 
-        const html = `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      @page { size: 80mm auto; margin: 5mm; }
-      body { font-size: 14px; font-family: monospace; }
-      .row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
-    </style>
-  </head>
-  <body>${printContents}</body>
-</html>`
+                        const html = `<!doctype html>
+                <html lang="en">
+                <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <style>
+                    @page { size: 80mm auto; margin: 5mm; }
+                    body { font-size: 14px; font-family: monospace; }
+                    .row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
+                    </style>
+                </head>
+                <body>${printContents}</body>
+                </html>`
 
         setPrinting(true)
         try {
@@ -143,13 +143,20 @@ export function ModalDetailMO({ row, onClose }) {
 
                 {/* Header */}
                 <div className="lap-modal-header">
-                    <div className="lap-modal-title">
-                        <FileText size={16} />
-                        <span>Detail MO</span>
-                        <span className="lap-nomor" style={{ fontSize: 13 }}>{row.nomor_mo}</span>
+                    <div className="lap-modal-title-wrap">
+                        <div className="lap-modal-title-icon">
+                            <FileText size={18} />
+                        </div>
+                        <div className="lap-modal-title-text">
+                            <span className="lap-modal-eyebrow">Detail Produksi</span>
+                            <div className="lap-modal-title">
+                                <span>Detail MO</span>
+                                <span className="lap-nomor lap-modal-mo-badge">{row.nomor_mo}</span>
+                            </div>
+                        </div>
                     </div>
-                    <button className="lap-modal-close" onClick={onClose}>
-                        <X size={16} />
+                    <button className="lap-modal-close" onClick={onClose} aria-label="Tutup modal detail MO">
+                        <X size={17} />
                     </button>
                 </div>
 
@@ -173,52 +180,80 @@ export function ModalDetailMO({ row, onClose }) {
                             <>
                                 {/* Info */}
                                 <div className="lap-modal-info">
-                                    <div className="lap-modal-info-item">
-                                        <span className="lap-modal-info-label">Produk</span>
-                                        <span className="lap-modal-info-val">{product_name}</span>
+                                    <div className="lap-modal-info-card lap-modal-info-card--product">
+                                        <div className="lap-modal-info-icon"><Package size={16} /></div>
+                                        <div className="lap-modal-info-content">
+                                            <span className="lap-modal-info-label">Produk</span>
+                                            <span className="lap-modal-info-val">{product_name}</span>
+                                        </div>
                                     </div>
-                                    <div className="lap-modal-info-item">
-                                        <span className="lap-modal-info-label">Start</span>
-                                        <span className="lap-modal-info-val">{start || '-'}</span>
+                                    <div className="lap-modal-info-card">
+                                        <div className="lap-modal-info-icon"><Clock size={16} /></div>
+                                        <div className="lap-modal-info-content">
+                                            <span className="lap-modal-info-label">Start</span>
+                                            <span className="lap-modal-info-val">{start || '-'}</span>
+                                        </div>
                                     </div>
-                                    <div className="lap-modal-info-item">
-                                        <span className="lap-modal-info-label">End</span>
-                                        <span className="lap-modal-info-val">{end || '-'}</span>
+                                    <div className="lap-modal-info-card">
+                                        <div className="lap-modal-info-icon"><Clock size={16} /></div>
+                                        <div className="lap-modal-info-content">
+                                            <span className="lap-modal-info-label">End</span>
+                                            <span className="lap-modal-info-val">{end || '-'}</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Struk summary */}
-                                <div className="lap-modal-struk">
-                                    <div className="lap-modal-struk-row"><span>TOT SEMEN</span><span>{pasir} Kg</span></div>
-                                    <div className="lap-modal-struk-row"><span>TOT KAPUR</span><span>{kapur} Kg</span></div>
-                                    <div className="lap-modal-struk-row"><span>SEQ SEMEN</span><span>{seq_semen.length}</span></div>
-                                    <div className="lap-modal-struk-row"><span>SEQ KAPUR</span><span>{seq_kapur.length}</span></div>
+                                {/* KPI summary */}
+                                <div className="lap-modal-kpis">
+                                    <div className="lap-modal-kpi lap-modal-kpi--semen">
+                                        <span className="lap-modal-kpi-label">TOT SEMEN</span>
+                                        <span className="lap-modal-kpi-value">{pasir.toLocaleString('id-ID')} <small>Kg</small></span>
+                                    </div>
+                                    <div className="lap-modal-kpi lap-modal-kpi--kapur">
+                                        <span className="lap-modal-kpi-label">TOT KAPUR</span>
+                                        <span className="lap-modal-kpi-value">{kapur.toLocaleString('id-ID')} <small>Kg</small></span>
+                                    </div>
+                                    <div className="lap-modal-kpi lap-modal-kpi--seq">
+                                        <span className="lap-modal-kpi-label">SEQ SEMEN</span>
+                                        <span className="lap-modal-kpi-value"><Hash size={15} /> {seq_semen.length}</span>
+                                    </div>
+                                    <div className="lap-modal-kpi lap-modal-kpi--seq">
+                                        <span className="lap-modal-kpi-label">SEQ KAPUR</span>
+                                        <span className="lap-modal-kpi-value"><Hash size={15} /> {seq_kapur.length}</span>
+                                    </div>
                                 </div>
 
                                 {/* Products table */}
-                                <div className="lap-table-wrap">
-                                    <table className="lap-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Seq</th>
-                                                <th>Produk</th>
-                                                <th>Qty (Kg)</th>
-                                                <th>Waktu</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {products.length === 0 ? (
-                                                <tr><td colSpan={4}><div className="lap-empty">Belum ada data timbang</div></td></tr>
-                                            ) : products.map((p, idx) => (
-                                                <tr key={idx}>
-                                                    <td>{p.seq}</td>
-                                                    <td>{p.produk_name}</td>
-                                                    <td>{Number(p.qty).toFixed(2)}</td>
-                                                    <td>{p.waktu ? formatDate(p.waktu) : '-'}</td>
+                                <div className="lap-modal-table-panel">
+                                    <div className="lap-modal-section-title">
+                                        <Scale size={15} />
+                                        <span>Transaksi Timbang</span>
+                                        <span className="lap-table-count">{products.length} data</span>
+                                    </div>
+                                    <div className="lap-table-wrap lap-modal-table-wrap">
+                                        <table className="lap-table lap-modal-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Seq</th>
+                                                    <th>Produk</th>
+                                                    <th className="lap-table-num">Qty (Kg)</th>
+                                                    <th>Waktu</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                {products.length === 0 ? (
+                                                    <tr><td colSpan={4}><div className="lap-empty">Belum ada data timbang</div></td></tr>
+                                                ) : products.map((p, idx) => (
+                                                    <tr key={idx}>
+                                                        <td><span className="lap-seq-pill">{p.seq}</span></td>
+                                                        <td className="lap-product-cell">{p.produk_name}</td>
+                                                        <td className="lap-table-num lap-qty-cell">{Number(p.qty).toFixed(2)}</td>
+                                                        <td className="lap-time-cell">{p.waktu ? formatDate(p.waktu) : '-'}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </>
                         )
